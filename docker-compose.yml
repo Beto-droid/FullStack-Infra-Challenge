@@ -1,0 +1,45 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fullstack_api_web
+    container_name: fullstack_api_web
+    command: python FullStackProject/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_NAME: fullstackdb
+      DATABASE_USER: fullstackuser
+      DATABASE_PASSWORD: fullstackpassword
+      DATABASE_HOST: 'db'
+      DATABASE_PORT: 5432
+      ALLOWED_HOSTS: 0.0.0.0,localhost
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  db:
+    image: postgres:17.0
+    container_name: fullstack_api_web_db
+    ports:
+      - "5444:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: fullstackdb
+      POSTGRES_USER: fullstackuser
+      POSTGRES_PASSWORD: fullstackpassword
+
+  redis:
+    image: redis:7.4.1
+    container_name: fullstack_api_web_redis
+    ports:
+      - "6390:6379"
+
+volumes:
+  postgres_data:
