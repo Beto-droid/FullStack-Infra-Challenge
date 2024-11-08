@@ -2,7 +2,6 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from .serializers import OrderSerializer
 from .models import Order
-# Create your views here.
 
 # idk why i had to override this.
 # Created custom pagination for only the page_size
@@ -30,19 +29,23 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
 class OrderDetailAPIView(generics.RetrieveAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    lookup_url_kwarg = 'id'
+    Lookup_field = 'id'
 
-class OrderUpdateAPIView(generics.UpdateAPIView):
+class OrderRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    Lookup_field = 'pk'
+    lookup_url_kwarg = 'id'
+    Lookup_field = 'id'
 
     def perform_update(self, serializer):
         serializer.save()
 
-class OrderDeleteAPIView(generics.DestroyAPIView):
+class OrderRetrieveDeleteAPIView(generics.RetrieveDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    lookup_field = 'pk'
+    lookup_url_kwarg = 'id'
+    Lookup_field = 'id'
 
     def perform_destroy(self, instance):
         instance.delete()
