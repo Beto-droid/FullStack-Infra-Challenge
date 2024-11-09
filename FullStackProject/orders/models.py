@@ -6,6 +6,10 @@ from django.db import models
 
 
 class Order(models.Model):
+
+    class Meta:
+        ordering = ['id']
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer_name = models.CharField(max_length=100)
     item = models.TextField(blank=True, null=True)

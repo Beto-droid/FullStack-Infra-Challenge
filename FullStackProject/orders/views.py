@@ -11,7 +11,7 @@ class CustomPageNumberPagination(PageNumberPagination):
     max_page_size = 100
 
 class OrderListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('id')
     serializer_class = OrderSerializer
     pagination_class = CustomPageNumberPagination
 
@@ -20,17 +20,17 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
         queryset = super().get_queryset()
         status = self.request.query_params.get('status')
         if status == 'all':
-            queryset = Order.objects.all()
+            queryset = Order.objects.all().order_by('id')
             return queryset
         if status:
-            queryset = queryset.filter(status=status)
+            queryset = queryset.filter(status=status).order_by('id')
         return queryset
 
     def perform_create(self, serializer):
         serializer.save()
 
 class OrderDetailAPIView(generics.RetrieveAPIView):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('id')
     serializer_class = OrderSerializer
     lookup_url_kwarg = 'id'
     Lookup_field = 'id'
@@ -45,7 +45,7 @@ class OrderRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         serializer.save()
 
 class OrderRetrieveDeleteAPIView(generics.RetrieveDestroyAPIView):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('id')
     serializer_class = OrderSerializer
     lookup_url_kwarg = 'id'
     Lookup_field = 'id'
