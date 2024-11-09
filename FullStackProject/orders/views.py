@@ -19,6 +19,9 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         status = self.request.query_params.get('status')
+        if status == 'all':
+            queryset = Order.objects.all()
+            return queryset
         if status:
             queryset = queryset.filter(status=status)
         return queryset

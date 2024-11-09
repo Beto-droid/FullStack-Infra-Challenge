@@ -1,0 +1,19 @@
+{% load static %}
+{% load django_htmx %}
+{% load crispy_forms_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Main base Title{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'htmx/htmx.min.js' %}"></script>
+{% django_htmx_script %}
+</body>
+</html>
