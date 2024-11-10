@@ -27,7 +27,7 @@ def parse_form_data_to_json(data_str):
 
 def order_list(request):
     page = request.GET.get('page', 1)
-    page_size = request.htmx.request.GET.get('page_size', 3)
+    page_size = request.htmx.request.GET.get('page_size', 5)
     filtering_status = request.htmx.request.GET.get('status', 'all')
     api_url = f"http://127.0.0.1:8000/orders/?page={page}&page_size={page_size}&status={filtering_status}"
     response = requests.get(api_url)

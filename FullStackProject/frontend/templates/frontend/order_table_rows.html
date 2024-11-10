@@ -15,7 +15,7 @@
             <span>{{ order.status }}</span>
         </td>
         <td>
-            <button hx-delete="{% url 'delete_order' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML" class="btn btn-danger" hx-include="[id='order-{{ order.id }}']">Delete</button>
+            <button hx-delete="{% url 'delete_order' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML" class="btn btn-danger" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-include="[id='order-{{ order.id }}']">Delete</button>
         </td>
     </tr>
 {% endfor %}
