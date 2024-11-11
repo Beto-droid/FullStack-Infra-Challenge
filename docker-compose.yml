@@ -7,7 +7,9 @@ services:
     container_name: fullstack_api_web
     command: >
       sh -c "python manage.py collectstatic --noinput &&
+             python manage.py makemigrations &&
              python manage.py migrate &&
+             python manage.py loaddata orders/fixtures/initial_data.json &&
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./FullStackProject:/app
@@ -36,6 +38,7 @@ services:
       - "5173:5173"
     depends_on:
       - web
+      - db
     env_file:
       - ./frontend_react/.env
 
