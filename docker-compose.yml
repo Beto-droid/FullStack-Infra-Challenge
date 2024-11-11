@@ -37,7 +37,7 @@ services:
     depends_on:
       - web
     env_file:
-      - ./frontend_react/.env  # Use React-specific .env file
+      - ./frontend_react/.env
 
   db:
     image: postgres:17.0
