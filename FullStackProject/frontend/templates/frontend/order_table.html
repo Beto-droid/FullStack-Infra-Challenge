@@ -1,8 +1,8 @@
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div id="orderTable">
-        <table class="table table-primary table-hover">
+    <div id="orderTableContentsTable" class="table-responsive">
+        <table class="table table-primary table-hover text-nowrap">
             <thead>
             <tr>
                 <th>ID</th>
@@ -19,73 +19,29 @@
         </table>
     </div>
 
-        <div class="justify-content-end">
-            <form hx-get="{% url 'front_end_main_view' %}"
-                  hx-target="#orderTable"
-                  hx-swap="innerHTML">
-                {% csrf_token %}
-                <label>
-                    <input type="text" name="page_size" placeholder="{{ page_size }}" required>
-                </label>
-                <input type="submit" value="Submit">
-            </form>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mt-3 ">
+        <form hx-get="{% url 'front_end_main_view' %}"
+              hx-target="#orderTable"
+              hx-swap="innerHTML"
+              class="d-flex align-items-center gap-2 mb-3">
+            {% csrf_token %}
+            <input type="number" name="page_size" placeholder="{{ page_size }}"
+                   required class="form-control form-control-sm w-auto inline-edit"
+                   style="max-width: 50px;" aria-label="Page Size">
+            <button type="submit" class="btn btn-primary btn-sm">Set Page Size</button>
+        </form>
 
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="filteringDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Filtering Status
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <li>
-                    <button class="dropdown-item" type="button"
-                            hx-get="{% url 'front_end_main_view' %}?page=1&page_size=3&status=pending"
-                            hx-target="#orderTable"
-                            hx-swap="innerHTML">Pending</button>
-                </li>
-                <li>
-                    <button class="dropdown-item" type="button"
-                            hx-get="{% url 'front_end_main_view' %}?page=1&page_size=3&status=completed"
-                            hx-target="#orderTable"
-                            hx-swap="innerHTML">Completed</button>
-                </li>
-                <li>
-                    <button class="dropdown-item" type="button"
-                            hx-get="{% url 'front_end_main_view' %}?page=1&page_size=3&status=cancelled"
-                            hx-target="#orderTable"
-                            hx-swap="innerHTML">Cancelled</button>
-                </li>
-            </ul>
-        </div>
-        <!-- Next and previus btns -->
-        <div class="pagination-controls">
+        <div class="btn-group">
             {% if prev_page %}
                 <button hx-get="{% url 'front_end_main_view' %}?page={{ page_number|add:-1 }}&page_size={{ page_size }}&status={{ filtering_status }}"
-                        hx-target="#orderTable"
-                        hx-swap="innerHTML"
-                        class="btn btn-primary">
-                    Previous
-                </button>
+                        hx-target="#orderTable" hx-swap="innerHTML"
+                        class="btn btn-outline-primary">Previous</button>
             {% endif %}
             {% if next_page %}
                 <button hx-get="{% url 'front_end_main_view' %}?page={{ page_number|add:1 }}&page_size={{ page_size }}&status={{ filtering_status }}"
-                        hx-target="#orderTable"
-                        hx-swap="innerHTML"
-                        class="btn btn-primary">
-                    Next
-                </button>
+                        hx-target="#orderTable" hx-swap="innerHTML"
+                        class="btn btn-outline-primary">Next</button>
             {% endif %}
         </div>
-
-        <form hx-post="{% url 'create_order' %}" hx-target="#orderTableBody" hx-swap="beforeend">
-            {% csrf_token %}
-            <input type="text" name="customer_name" placeholder="Customer Name" required>
-            <input type="text" name="item" placeholder="Item" required>
-            <input type="number" name="quantity" placeholder="Quantity" required>
-            <select name="status">
-                <option value="pending">Pending</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Add Order</button>
-        </form>
+    </div>
 {% endblock %}

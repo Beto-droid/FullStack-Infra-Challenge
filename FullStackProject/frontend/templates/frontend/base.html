@@ -7,7 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Main base Title{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+{#    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/css/front_end_base.css' %}">
     {% block extra_head %}{% endblock %}
 </head>
 <body>
