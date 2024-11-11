@@ -5,13 +5,18 @@ services:
       dockerfile: Dockerfile
     image: fullstack_api_web
     container_name: fullstack_api_web
-    command: python FullStackProject/manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/app
+      - ./FullStackProject:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
       DATABASE_NAME: fullstackdb
       DATABASE_USER: fullstackuser
@@ -19,6 +24,20 @@ services:
       DATABASE_HOST: 'db'
       DATABASE_PORT: 5432
       ALLOWED_HOSTS: 0.0.0.0,localhost,127.0.0.1
+
+  react-web:
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+    image: fullstack_react_web
+    container_name: fullstack_react_web
+    command: npm run dev
+    ports:
+      - "5173:5173"
+    depends_on:
+      - web
+    env_file:
+      - ./frontend_react/.env  # Use React-specific .env file
 
   db:
     image: postgres:17.0
