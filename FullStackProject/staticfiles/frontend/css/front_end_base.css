@@ -1,0 +1,19 @@
+.inline-edit {
+    background-color: #ff8e42;
+    border: 1px solid #d96a26;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+}
+.inline-edit::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+body {
+    background-image: url('wave-haikei.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #f0f0f0;
+}

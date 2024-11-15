@@ -1,0 +1,47 @@
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div id="orderTableContentsTable" class="table-responsive">
+        <table class="table table-primary table-hover text-nowrap">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="orderTableBody">
+            {% include 'frontend/order_table_rows.html' %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3 ">
+        <form hx-get="{% url 'front_end_main_view' %}"
+              hx-target="#orderTable"
+              hx-swap="innerHTML"
+              class="d-flex align-items-center gap-2 mb-3">
+            {% csrf_token %}
+            <input type="number" name="page_size" placeholder="{{ page_size }}"
+                   required class="form-control form-control-sm w-auto inline-edit"
+                   style="max-width: 50px;" aria-label="Page Size">
+            <button type="submit" class="btn btn-primary btn-sm">Set Page Size</button>
+        </form>
+
+        <div class="btn-group">
+            {% if prev_page %}
+                <button hx-get="{% url 'front_end_main_view' %}?page={{ page_number|add:-1 }}&page_size={{ page_size }}&status={{ filtering_status }}"
+                        hx-target="#orderTable" hx-swap="innerHTML"
+                        class="btn btn-outline-primary">Previous</button>
+            {% endif %}
+            {% if next_page %}
+                <button hx-get="{% url 'front_end_main_view' %}?page={{ page_number|add:1 }}&page_size={{ page_size }}&status={{ filtering_status }}"
+                        hx-target="#orderTable" hx-swap="innerHTML"
+                        class="btn btn-outline-primary">Next</button>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

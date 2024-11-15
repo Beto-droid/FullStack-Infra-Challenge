@@ -1,0 +1,21 @@
+{% csrf_token %}
+{% for order in orders %}
+    <tr id="order-{{ order.id }}">
+        <td>{{ order.id }}</td>
+        <td hx-get="{% url 'edit_order_row' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML">
+            <span>{{ order.customer_name }}</span>
+        </td>
+        <td hx-get="{% url 'edit_order_row' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML">
+            <span>{{ order.item }}</span>
+        </td>
+        <td hx-get="{% url 'edit_order_row' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML">
+            <span>{{ order.quantity }}</span>
+        </td>
+        <td hx-get="{% url 'edit_order_row' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML">
+            <span>{{ order.status }}</span>
+        </td>
+        <td>
+            <button hx-delete="{% url 'delete_order' order.id %}" hx-target="#order-{{ order.id }}" hx-swap="outerHTML" class="btn btn-danger" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-include="[id='order-{{ order.id }}']">Delete</button>
+        </td>
+    </tr>
+{% endfor %}

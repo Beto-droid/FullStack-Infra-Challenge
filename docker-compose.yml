@@ -1,0 +1,58 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fullstack_api_web
+    container_name: fullstack_api_web
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py loaddata orders/fixtures/initial_data.json &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./FullStackProject:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      DATABASE_NAME: fullstackdb
+      DATABASE_USER: fullstackuser
+      DATABASE_PASSWORD: fullstackpassword
+      DATABASE_HOST: 'db'
+      DATABASE_PORT: 5432
+      ALLOWED_HOSTS: 0.0.0.0,localhost,127.0.0.1
+
+  react-web:
+    build:
+      context: ./frontend_react
+      dockerfile: Dockerfile
+    image: fullstack_react_web
+    container_name: fullstack_react_web
+    command: npm run dev
+    ports:
+      - "5173:5173"
+    depends_on:
+      - web
+      - db
+    env_file:
+      - ./frontend_react/.env
+
+  db:
+    image: postgres:17.0
+    container_name: fullstack_api_web_db
+    ports:
+      - "5444:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: fullstackdb
+      POSTGRES_USER: fullstackuser
+      POSTGRES_PASSWORD: fullstackpassword
+
+volumes:
+  postgres_data:
